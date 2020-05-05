@@ -1,4 +1,4 @@
-# pedido
+# Pedido (exemplo)
 
 
 ## Docker p/ PostgreSQL

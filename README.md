@@ -1,5 +1,6 @@
 # Pedido (exemplo)
 
+Spring Boot and JPA sample project 
 
 ## Docker p/ PostgreSQL
 ```ssh

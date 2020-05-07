@@ -7,11 +7,11 @@ public class Produto {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_seq")
     @SequenceGenerator(name="produto_seq",sequenceName = "produto_seq")
-    // @Column(name = "cd_produto")
+    @Column(name = "cd_produto")
     private Long cdProduto;
-    // @Column(name = "ds_produto")
+    @Column(name = "ds_produto")
     private String dsProduto;
-    // @Column(name = "vr_unitproduto")
+    @Column(name = "vr_unitproduto")
     private Float vrUnitproduto;
 
     public Produto() {

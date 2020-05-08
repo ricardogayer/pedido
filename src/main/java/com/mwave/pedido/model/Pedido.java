@@ -1,6 +1,7 @@
 package com.mwave.pedido.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +9,30 @@ import java.util.List;
 @Entity
 public class Pedido {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nr_pedido")
     private Long id;
-    private LocalDate dtPedido;
-    private Float vrTotalPedido;
+    private LocalDate dtPedido = LocalDate.now();
+    private BigDecimal vrTotalPedido = new BigDecimal(0);
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItem> pedidoItens = new ArrayList<>();
 
 
     public Pedido() {
+    }
+
+    public void addPedidoItem(PedidoItem pedidoItem) {
+        this.vrTotalPedido = vrTotalPedido.add(pedidoItem.getVlTotalItemPedido());
+        this.pedidoItens.add(pedidoItem);
+        pedidoItem.setPedido(this);
+    }
+
+    public void deletePedidoItem(PedidoItem pedidoItem) {
+        this.vrTotalPedido = vrTotalPedido.subtract(pedidoItem.getVlTotalItemPedido());
+        pedidoItem.setPedido(null);
+        this.pedidoItens.remove(pedidoItem);
     }
 
     public List<PedidoItem> getPedidoItens() {
@@ -45,11 +59,19 @@ public class Pedido {
         this.dtPedido = dtPedido;
     }
 
-    public Float getVrTotalPedido() {
+    public BigDecimal getVrTotalPedido() {
         return vrTotalPedido;
     }
 
-    public void setVrTotalPedido(Float vrTotalPedido) {
+    public void setVrTotalPedido(BigDecimal vrTotalPedido) {
         this.vrTotalPedido = vrTotalPedido;
     }
+
+    /*
+    @PostPersist
+    public void dataPedido() {
+        this.setDtPedido(LocalDate.now());
+    }
+     */
+
 }

@@ -1,6 +1,7 @@
 package com.mwave.pedido.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Produto {
@@ -12,12 +13,12 @@ public class Produto {
     @Column(name = "ds_produto")
     private String dsProduto;
     @Column(name = "vr_unitproduto")
-    private Float vrUnitproduto;
+    private BigDecimal vrUnitproduto;
 
     public Produto() {
     }
 
-    public Produto(String dsProduto, Float vrUnitproduto) {
+    public Produto(String dsProduto, BigDecimal vrUnitproduto) {
         this.dsProduto = dsProduto;
         this.vrUnitproduto = vrUnitproduto;
     }
@@ -38,11 +39,11 @@ public class Produto {
         this.dsProduto = dsProduto;
     }
 
-    public Float getVrUnitproduto() {
+    public BigDecimal getVrUnitproduto() {
         return vrUnitproduto;
     }
 
-    public void setVrUnitproduto(Float vrUnitproduto) {
+    public void setVrUnitproduto(BigDecimal vrUnitproduto) {
         this.vrUnitproduto = vrUnitproduto;
     }
 }

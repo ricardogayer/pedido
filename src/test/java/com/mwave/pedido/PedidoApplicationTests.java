@@ -13,10 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 		// Ordenar os testes!!!
 class PedidoApplicationTests {
+
+	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	@Autowired
 	ProdutoRepository produtoRepository;
@@ -56,7 +62,7 @@ class PedidoApplicationTests {
 			System.out.println("Produto " + p.getCdProduto() + " - " + p.getDsProduto());
 		}
 
-		assertEquals(3, produtos.size());
+		assertEquals(13, produtos.size());
 
 	}
 
@@ -104,6 +110,16 @@ class PedidoApplicationTests {
 		pedidoRepository.save(pedido);
 
 		assertEquals(new BigDecimal(33.5), pedido.getVrTotalPedido());
+
+		Pedido pedidoErro = new Pedido();
+		pedido.setVrTotalPedido(new BigDecimal(0));
+
+
+		Set<ConstraintViolation<Pedido>> violations = validator.validate(pedidoErro);
+
+		System.out.println(violations.size() > 0);
+
+		pedidoRepository.save(pedidoErro);
 
 	}
 

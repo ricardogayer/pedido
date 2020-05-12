@@ -1,6 +1,7 @@
 package com.mwave.pedido.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nr_pedido")
     private Long id;
-    private LocalDate dtPedido = LocalDate.now();
+    private LocalDate dtPedido;
+    @DecimalMin(value = "0.0", inclusive = false, message = "O valor do pedido precisa ser maior que zero!")
     private BigDecimal vrTotalPedido = new BigDecimal(0);
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -67,11 +69,9 @@ public class Pedido {
         this.vrTotalPedido = vrTotalPedido;
     }
 
-    /*
-    @PostPersist
+    @PrePersist
     public void dataPedido() {
         this.setDtPedido(LocalDate.now());
     }
-     */
 
 }
